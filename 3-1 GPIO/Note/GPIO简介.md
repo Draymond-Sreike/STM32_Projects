@@ -205,11 +205,180 @@
 
 ### 模拟输入
 
+> ![image-20230121214909697](D:\大学\单片机学习\MCU Learning Resource\STM32\STM32_Projects\3-1 GPIO\Note\image-20230121214909697.png)
+
+模拟输入是ADC数模转换器的专属配置，此模式下输出信号通路的开关处于断开状态，而施密特触发器也处于关闭状态，GPIO位结构状态如下图所示
+
+> ![image-20230121220926229](D:\大学\单片机学习\MCU Learning Resource\STM32\STM32_Projects\3-1 GPIO\Note\image-20230121220926229.png)
+
+此时的引脚直接连接到片上外设
+
+> ![image-20230121233310475](D:\大学\单片机学习\MCU Learning Resource\STM32\STM32_Projects\3-1 GPIO\Note\image-20230121233310475.png)
+
+**所以当我们使用ADC时，将引脚配置为模拟输入即可**，其他时候一般用不上模拟输入。
+
+## 输出模式
+
+### 开漏输出与推挽输出
+
+> ![image-20230121233431711](D:\大学\单片机学习\MCU Learning Resource\STM32\STM32_Projects\3-1 GPIO\Note\image-20230121233431711.png)
+
+数字输出口，用于输出高低电平，二者的区别在于
+
+- **开漏输出的高电平呈现高阻态，没有驱动能力**（P-MOS无效则为开漏输出模式）
+
+- **推挽输出的高低电平都具有驱动能力**（P-MOS则为推挽输出模式）
+
+    两种模式的N-MOS都有效
+
+    （以上内容所描述的MOS请参见"GPIO位结构-输出部分-MOS管"）
+
+**另外在输出模式下，输入模式也有效的；但输入模式下，输出模式是无效的**。这是因为**一个端口只能有一个输出，但可以有多个输入**。所以当配置成输出模式时，内部也可以顺便输入一下，这是允许的。
+
+### 复用开漏输出和推挽输出
+
+> ![image-20230121234251323](D:\大学\单片机学习\MCU Learning Resource\STM32\STM32_Projects\3-1 GPIO\Note\image-20230121234251323.png)
+
+这两个与普通的开漏和推挽输出差不多，只不过复用模式下，引脚电平是由片上外设控制
+
+> ![image-20230121234433697](D:\大学\单片机学习\MCU Learning Resource\STM32\STM32_Projects\3-1 GPIO\Note\image-20230121234433697.png)
+>
+> 可以看到这种模式下输出数据寄存器的通路断开，引脚的控制权转移到了片上外设
+
+在输出部分，片上外设也可以读取引脚电平，同时普通的输入数据寄存器读取也是有效的，如下
+
+> ![image-20230121234555912](D:\大学\单片机学习\MCU Learning Resource\STM32\STM32_Projects\3-1 GPIO\Note\image-20230121234555912.png)
+
+**实际上在GPIO的8种模式中，除了模拟输入这个模式会关闭数字的输入功能，其它的7个模式中，所以的输入都是有效的**。如下图所示
+
+> ![image-20230121234912831](D:\大学\单片机学习\MCU Learning Resource\STM32\STM32_Projects\3-1 GPIO\Note\image-20230121234912831.png)
+
+# 手册使用
+
+## 外设的GPIO配置
+
+> ![image-20230121235019935](D:\大学\单片机学习\MCU Learning Resource\STM32\STM32_Projects\3-1 GPIO\Note\image-20230121235019935.png)
+
+当我们使用这些**片上外设的引脚**时，可以参考这个表里给的配置
+
+## GPIO寄存器
+
+### 端口配置寄存器
+
+> ![image-20230121235214416](D:\大学\单片机学习\MCU Learning Resource\STM32\STM32_Projects\3-1 GPIO\Note\image-20230121235214416.png)
+
+ 每个端口由4个寄存器进行配置，16个端口就需要64个寄存器。因为STM32有16个端口，STM32又是32位，所以STM32中有两个配置寄存器，一个是高寄存器，一个是低寄存器，如下
+
+> ![image-20230121235451307](D:\大学\单片机学习\MCU Learning Resource\STM32\STM32_Projects\3-1 GPIO\Note\image-20230121235451307.png)
+>
+> ![image-20230121235741969](D:\大学\单片机学习\MCU Learning Resource\STM32\STM32_Projects\3-1 GPIO\Note\image-20230121235741969.png)
+
+具体如何配置可以参考手册中中的说明：
+
+> ![image-20230121235835251](D:\大学\单片机学习\MCU Learning Resource\STM32\STM32_Projects\3-1 GPIO\Note\image-20230121235835251.png)
+
+ 另外GPIO配置还多了一项GPIO速度配置，如下：
+
+> ![image-20230121235941733](D:\大学\单片机学习\MCU Learning Resource\STM32\STM32_Projects\3-1 GPIO\Note\image-20230121235941733.png)
+
+位结构图中并没有速度这个参数的电路结构。
+
+这个GPIO的输出速度可以限制输出引脚的最大翻转速度，这个设计出来是为了低功耗和稳定性的，一般要求不高的时候配置为50MHz即可
+
+### 端口输入数据寄存器
+
+> ![image-20230122000913140](D:\大学\单片机学习\MCU Learning Resource\STM32\STM32_Projects\3-1 GPIO\Note\image-20230122000913140.png)
+
+这个寄存器使用的是低16位的引脚，高16位的引脚没有用。该寄存器对应GPIO位结构中的位置如下：
+
+> ![image-20230122001129524](D:\大学\单片机学习\MCU Learning Resource\STM32\STM32_Projects\3-1 GPIO\Note\image-20230122001129524.png)
+
+### 端口输出数据寄存器
+
+> ![image-20230122001156483](D:\大学\单片机学习\MCU Learning Resource\STM32\STM32_Projects\3-1 GPIO\Note\image-20230122001156483.png)
+
+对应GPIO位结构中的位置如下
+
+> ![image-20230122001217068](D:\大学\单片机学习\MCU Learning Resource\STM32\STM32_Projects\3-1 GPIO\Note\image-20230122001217068.png)
+
+同样低16位对应16个引脚，高16位没有用。
+
+### 端口位设置/清除寄存器
+
+> ![image-20230122003101390](D:\大学\单片机学习\MCU Learning Resource\STM32\STM32_Projects\3-1 GPIO\Note\image-20230122003101390.png)
+
+该寄存器的高16位是进行位清除的，低16位是进行位设置的。
+
+写1即位设置或清楚，写0即不产生影响。
+
+### 端口位清除寄存器
+
+这个寄存器的低16位功能与端口位设置/清除寄存器的高16的功能是一样的，均是位清除功能。
+
+> ![image-20230122003317799](D:\大学\单片机学习\MCU Learning Resource\STM32\STM32_Projects\3-1 GPIO\Note\image-20230122003317799.png)
+
+这个寄存器存在是为了方便操作而设置的：我们如果想单一地进行位设置或位清除，位设置时就用端口位设置/清除寄存器的低16位，位清除时就用端口位清除寄存器的低16位，这样在设置和清除时都是使用低16位的数据，这样就方便一些。
 
 
+
+如果我们是想对多个端口同时进行位设置和位清除，那就使用端口位设置/清除寄存器即可，这样可以保证位设置和位清除的同步性。（如果我们对信号的同步性要求不高的话，先位设置再位清除也是没有问题的）
+
+### 端口配置锁定寄存器
+
+> ![image-20230122004614034](D:\大学\单片机学习\MCU Learning Resource\STM32\STM32_Projects\3-1 GPIO\Note\image-20230122004614034.png)
+
+这个寄存器可以对端口的配置进行锁定，防止意外更改。这个我们用的暂时不多，使用方法见手册。
+
+# 拓展
+
+## 三极管电路知识
+
+因为三极管的通断是需要在发射极和基极之间产生一定的开启电压的，如果我们把负载接在发射极一边，则可能导致三极管无法开启，如下图所示：
+
+> ​	<img src="D:\大学\单片机学习\MCU Learning Resource\STM32\STM32_Projects\3-1 GPIO\Note\image-20230122005242278.png" alt="image-20230122005242278" style="zoom:50%;" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1
+
+
+
+
+
+
+
+
+
+
+
+> 
+>
+> 
+>
 > ![image-20230118145003763](D:\大学\单片机学习\MCU Learning Resource\STM32\STM32_Projects\3-1 GPIO\Note\image-20230118145003763.png)
 >
-> 在STM32中所有的GPIO都是挂载在APB2外设总线上的。
-
-
-
+> > > 在STM32中所有的GPIO都是挂载在APB2外设总线上的。
+> >
+> > 
+> >
+> > 
