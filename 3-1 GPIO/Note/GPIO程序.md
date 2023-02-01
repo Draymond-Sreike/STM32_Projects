@@ -37,6 +37,27 @@
 > - GPIO_WriteBit，可以根据该函数的第3个参数BitValue来设置端口的高低电平
 > - GPIO_Write，通过PortVal可以同时对16端口进行写入操作
 
+# GPIO其他函数
+
+1. > ![image-20230201113305222](D:\大学\单片机学习\MCU Learning Resource\STM32\STM32_Projects\3-1 GPIO\Note\image-20230201113305222.png)
+
+    该函数用来锁定GPIO配置，调用这个函数，参数指定某个引脚，那么这个引脚的配置就会被锁定，防止意外更改。 
+
+2. > ![image-20230201113417849](D:\大学\单片机学习\MCU Learning Resource\STM32\STM32_Projects\3-1 GPIO\Note\image-20230201113417849.png)
+
+    这两个函数是用来配置AFIO的事件输出功能的。
+
+3. > ![image-20230201113517061](D:\大学\单片机学习\MCU Learning Resource\STM32\STM32_Projects\3-1 GPIO\Note\image-20230201113517061.png)
+
+    - GPIO_PinRemapConfig可以用来进行引脚重映射
+        - 第一个参数选择重映射的方式
+        - 第二参数是新的状态
+    - GPIO_EXTILineConfig可以配置AFIO的数据选择器，以此来选择我们想要的中断引脚
+
+4. > ![image-20230201113723375](D:\大学\单片机学习\MCU Learning Resource\STM32\STM32_Projects\3-1 GPIO\Note\image-20230201113723375.png)
+
+    与以太网有关。（有些芯片没有以太网，可能用不上，像我们目前所学型号的32就没有）
+
 # 注意不要选PA15、PB3、PB4
 
 > ![image-20230122184325545](D:\大学\单片机学习\MCU Learning Resource\STM32\STM32_Projects\3-1 GPIO\Note\image-20230122184325545.png)
