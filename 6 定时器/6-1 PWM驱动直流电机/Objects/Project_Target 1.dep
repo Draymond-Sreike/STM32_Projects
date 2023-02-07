@@ -810,7 +810,7 @@ I (.\Libraries\stm32f10x_wwdg.h)(0x4D783BB4)
 I (.\Libraries\misc.h)(0x4D783BB4)
 I (.\System\Delay.h)(0x6130920D)
 F (.\Hardware\Key.h)(0x63DE1C43)()
-F (.\Hardware\Motor.c)(0x63DE304F)(--c99 -c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections -I .\Start -I .\Libraries -I .\User -I .\Hardware -I .\System-I.\RTE\_Target_1-I"E:\Keil5\Keil5 MDK\ARM\PACK\Keil\STM32F1xx_DFP\2.2.0\Device\Include"-I"E:\Keil5\Keil5 MDK\ARM\CMSIS\Include"-D__UVISION_VERSION="524" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER-o .\objects\motor.o --omf_browse .\objects\motor.crf --depend .\objects\motor.d)
+F (.\Hardware\Motor.c)(0x63E214A6)(--c99 -c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections -I .\Start -I .\Libraries -I .\User -I .\Hardware -I .\System-I.\RTE\_Target_1-I"E:\Keil5\Keil5 MDK\ARM\PACK\Keil\STM32F1xx_DFP\2.2.0\Device\Include"-I"E:\Keil5\Keil5 MDK\ARM\CMSIS\Include"-D__UVISION_VERSION="524" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER-o .\objects\motor.o --omf_browse .\objects\motor.crf --depend .\objects\motor.d)
 I (.\Start\stm32f10x.h)(0x4D783CB4)
 I (.\Start\core_cm3.h)(0x4D523B58)
 I (E:\Keil5\Keil5 MDK\ARM\ARMCC\include\stdint.h)(0x588B8344)
@@ -871,7 +871,7 @@ I (.\Libraries\stm32f10x_usart.h)(0x4D783BB4)
 I (.\Libraries\stm32f10x_wwdg.h)(0x4D783BB4)
 I (.\Libraries\misc.h)(0x4D783BB4)
 F (.\System\Delay.h)(0x6130920D)()
-F (.\System\PWM.c)(0x63DE31DD)(--c99 -c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections -I .\Start -I .\Libraries -I .\User -I .\Hardware -I .\System-I.\RTE\_Target_1-I"E:\Keil5\Keil5 MDK\ARM\PACK\Keil\STM32F1xx_DFP\2.2.0\Device\Include"-I"E:\Keil5\Keil5 MDK\ARM\CMSIS\Include"-D__UVISION_VERSION="524" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER-o .\objects\pwm.o --omf_browse .\objects\pwm.crf --depend .\objects\pwm.d)
+F (.\System\PWM.c)(0x63E2148C)(--c99 -c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections -I .\Start -I .\Libraries -I .\User -I .\Hardware -I .\System-I.\RTE\_Target_1-I"E:\Keil5\Keil5 MDK\ARM\PACK\Keil\STM32F1xx_DFP\2.2.0\Device\Include"-I"E:\Keil5\Keil5 MDK\ARM\CMSIS\Include"-D__UVISION_VERSION="524" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER-o .\objects\pwm.o --omf_browse .\objects\pwm.crf --depend .\objects\pwm.d)
 I (.\Start\stm32f10x.h)(0x4D783CB4)
 I (.\Start\core_cm3.h)(0x4D523B58)
 I (E:\Keil5\Keil5 MDK\ARM\ARMCC\include\stdint.h)(0x588B8344)
