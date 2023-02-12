@@ -61,8 +61,8 @@ void TIM3_IRQHandler(void)
 		RightMotor_Count_5ms = EnCounter_Right_Get();
 	}
 	
-	LeftMotor_rad_s = LeftMotor_Count_5ms * 200 / 1590 * 360;
-	RightMotor_rad_s = RightMotor_Count_5ms * 200 / 1590 * 360;
+	LeftMotor_rad_s = LeftMotor_Count_5ms * 200 / 1560 * 360;
+	RightMotor_rad_s = RightMotor_Count_5ms * 200 / 1560 * 360;
 	
 	TIM3->SR&=~(1<<0);//清除中断标志位 	    
 }

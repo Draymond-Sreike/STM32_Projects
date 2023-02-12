@@ -31,3 +31,4 @@
 .\objects\main.o: .\System\Delay.h
 .\objects\main.o: .\Hardware\OLED.h
 .\objects\main.o: .\Hardware\MPU6050.h
+.\objects\main.o: E:\Keil5\Keil5 MDK\ARM\ARMCC\Bin\..\include\stdio.h

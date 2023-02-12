@@ -27,7 +27,13 @@ Project File Date:  02/10/2023
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 5 (build 528)', folder: 'E:\Keil5\Keil5 MDK\ARM\ARMCC\Bin'
 Build target 'Target 1'
-".\Objects\Project.axf" - 0 Error(s), 0 Warning(s).
+compiling main.c...
+User\main.c(10): warning:  #550-D: variable "MPU6050_ID"  was set but never used
+  	uint8_t MPU6050_ID;
+User\main.c: 1 warning, 0 errors
+linking...
+Program Size: Code=5624 RO-data=1800 RW-data=12 ZI-data=1884  
+".\Objects\Project.axf" - 0 Error(s), 1 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -41,7 +47,7 @@ Package Vendor: Keil
   E:\Keil5\Keil5 MDK\ARM\PACK\Keil\STM32F1xx_DFP\2.2.0\Device\Include
 
 <h2>Collection of Component Files used:</h2>
-Build Time Elapsed:  00:00:00
+Build Time Elapsed:  00:00:01
 </pre>
 </body>
 </html>

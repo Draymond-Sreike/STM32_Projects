@@ -3,6 +3,7 @@
 #include "OLED.h"
 #include "MPU6050.h"
 
+#include <stdio.h>
 int main()
 {
 	int16_t AccX, AccY, AccZ, GyroX, GyroY, GyroZ;
@@ -14,6 +15,8 @@ int main()
 	MPU6050_ID = MPU6050_GetID();
 	OLED_ShowString(1, 4, "Acce");
 	OLED_ShowString(1, 12, "Gyro");
+	
+	printf("1");
 	
 	OLED_ShowString(2, 1, "X:");
 	OLED_ShowString(3, 1, "Y:");

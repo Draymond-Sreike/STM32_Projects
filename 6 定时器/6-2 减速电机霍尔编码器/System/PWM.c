@@ -38,10 +38,10 @@ void PWM_Init(void)	// TIM1的CH1和CH4输出PWM
 	
 	TIM_CtrlPWMOutputs(TIM1,ENABLE);	//MOE 主输出使能 这一句没有的话无法输出PWM（高级定时器要写，通用定时器不用）
 
-//	TIM_OC1PreloadConfig(TIM1, TIM_OCPreload_Enable);  //CH1预装载使能	 
-//	TIM_OC4PreloadConfig(TIM1, TIM_OCPreload_Enable);  //CH4预装载使能	 
+	TIM_OC1PreloadConfig(TIM1, TIM_OCPreload_Enable);  //CH1预装载使能（注释后效果不变）
+	TIM_OC4PreloadConfig(TIM1, TIM_OCPreload_Enable);  //CH4预装载使能（注释后效果不变）	 
 	
-//	TIM_ARRPreloadConfig(TIM1, ENABLE); //使能TIMx在ARR上的预装载寄存器
+	TIM_ARRPreloadConfig(TIM1, ENABLE); //使能TIMx在ARR上的预装载寄存器（注释后效果不变）
 	
 	TIM_Cmd(TIM1, ENABLE);  //使能TIM1
 }
