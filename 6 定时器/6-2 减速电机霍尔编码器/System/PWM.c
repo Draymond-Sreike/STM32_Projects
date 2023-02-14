@@ -14,7 +14,7 @@ void PWM_Init(void)	// TIM1的CH1和CH4输出PWM
 	TIM_TimeBaseInitStructure.TIM_ClockDivision = 0;
 	TIM_TimeBaseInitStructure.TIM_CounterMode = TIM_CounterMode_Up;
 	TIM_TimeBaseInitStructure.TIM_Period = 100 - 1; 				// AAR
-	TIM_TimeBaseInitStructure.TIM_Prescaler = 200 -1;				// PSC
+	TIM_TimeBaseInitStructure.TIM_Prescaler = 200 - 1;				// PSC
 	TIM_TimeBaseInitStructure.TIM_RepetitionCounter = 0;
 	TIM_TimeBaseInit(TIM1, &TIM_TimeBaseInitStructure);
 	

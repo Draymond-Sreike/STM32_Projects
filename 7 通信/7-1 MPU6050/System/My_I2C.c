@@ -3,43 +3,52 @@
 
 // 下面的宏定义暂时没有上
 #define MY_I2C_SCL_PORT		GPIOB
-#define MY_I2C_SDA_PORT		GPIOB
-#define MY_I2C_SCL_PIN		GPIO_Pin_8
-#define MY_I2C_SDA_PIN		GPIO_Pin_9
-#define MY_I2C_W_SCL(x)		GPIO_WriteBit(GPIOB, GPIO_Pin_8, (BitAction)x)
-#define MY_I2C_W_SDA(x)		GPIO_WriteBit(GPIOB, GPIO_Pin_9, (BitAction)x)
-#define MY_I2C_R_SDA(x)		GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_9)
+#define MY_I2C_SDA_PORT		GPIOA
+#define MY_I2C_SCL_PIN		GPIO_Pin_3
+#define MY_I2C_SDA_PIN		GPIO_Pin_15
+#define MY_I2C_W_SCL(x)		GPIO_WriteBit(GPIOB, GPIO_Pin_3, (BitAction)x)
+#define MY_I2C_W_SDA(x)		GPIO_WriteBit(GPIOB, GPIO_Pin_15, (BitAction)x)
+#define MY_I2C_R_SDA(x)		GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_15)
 #define DELAY_US(y)			Delay_us(y)
 
 void My_I2C_Init(void)
 {
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
+	GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable, ENABLE);
 	
 	GPIO_InitTypeDef GPIO_InitStructure;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_OD;
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8 | GPIO_Pin_9;
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_15;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_Init(GPIOA, &GPIO_InitStructure);
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_OD;
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
 	
-	GPIO_SetBits(GPIOB, GPIO_Pin_8 | GPIO_Pin_9);	// 保证初始化后SDA和SCL处于释放/空闲状态
+	GPIO_SetBits(GPIOA, GPIO_Pin_15);	// 保证初始化后SDA和SCL处于释放/空闲状态
+	GPIO_SetBits(GPIOB, GPIO_Pin_3);	// 保证初始化后SDA和SCL处于释放/空闲状态
+
 }
 
 void My_I2C_W_SCL(uint8_t BitValue)
 {
-	GPIO_WriteBit(GPIOB, GPIO_Pin_8, (BitAction)BitValue);
+	GPIO_WriteBit(GPIOB, GPIO_Pin_3, (BitAction)BitValue);
 	Delay_us(10);	//放缓单片机IO口电平翻转速度，让MPU6050能跟得上
 }
 
 void My_I2C_W_SDA(uint8_t BitValue)
 {
-	GPIO_WriteBit(GPIOB, GPIO_Pin_9, (BitAction)BitValue);
+	GPIO_WriteBit(GPIOA, GPIO_Pin_15, (BitAction)BitValue);
 	Delay_us(10);	
 }
 
 uint8_t My_I2C_R_SDA(void)
 {
 	uint8_t BitValue;
-	BitValue = GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_9);
+	BitValue = GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_15);
 	Delay_us(10);
 	return BitValue;
 }
