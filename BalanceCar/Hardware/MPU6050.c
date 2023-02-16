@@ -48,25 +48,25 @@ uint8_t MPU6050_ReadReg_Byte(uint8_t RegAddress)
 
 void MPU6050_Init(void)
 {
-//	IIC_Init();
-//	IICwriteBits(devAddr, MPU6050_RA_PWR_MGMT_1, MPU6050_PWR1_CLKSEL_BIT, MPU6050_PWR1_CLKSEL_LENGTH, MPU6050_CLOCK_PLL_YGYRO);
-//    IICwriteBits(devAddr, MPU6050_RA_GYRO_CONFIG, MPU6050_GCONFIG_FS_SEL_BIT, MPU6050_GCONFIG_FS_SEL_LENGTH, MPU6050_GYRO_FS_2000);
-//    IICwriteBits(devAddr, MPU6050_RA_ACCEL_CONFIG, MPU6050_ACONFIG_AFS_SEL_BIT, MPU6050_ACONFIG_AFS_SEL_LENGTH, MPU6050_ACCEL_FS_2);
-//    IICwriteBit(devAddr, MPU6050_RA_PWR_MGMT_1, MPU6050_PWR1_SLEEP_BIT, 1);
-//    IICwriteBit(devAddr, MPU6050_RA_USER_CTRL, MPU6050_USERCTRL_I2C_MST_EN_BIT, 1);
-//	IICwriteBit(devAddr, MPU6050_RA_INT_PIN_CFG, MPU6050_INTCFG_I2C_BYPASS_EN_BIT, 1);
+	IIC_Init();
+	IICwriteBits(devAddr, MPU6050_RA_PWR_MGMT_1, MPU6050_PWR1_CLKSEL_BIT, MPU6050_PWR1_CLKSEL_LENGTH, MPU6050_CLOCK_PLL_YGYRO);
+    IICwriteBits(devAddr, MPU6050_RA_GYRO_CONFIG, MPU6050_GCONFIG_FS_SEL_BIT, MPU6050_GCONFIG_FS_SEL_LENGTH, MPU6050_GYRO_FS_2000);
+    IICwriteBits(devAddr, MPU6050_RA_ACCEL_CONFIG, MPU6050_ACONFIG_AFS_SEL_BIT, MPU6050_ACONFIG_AFS_SEL_LENGTH, MPU6050_ACCEL_FS_2);
+    IICwriteBit(devAddr, MPU6050_RA_PWR_MGMT_1, MPU6050_PWR1_SLEEP_BIT, 1);
+    IICwriteBit(devAddr, MPU6050_RA_USER_CTRL, MPU6050_USERCTRL_I2C_MST_EN_BIT, 1);
+	IICwriteBit(devAddr, MPU6050_RA_INT_PIN_CFG, MPU6050_INTCFG_I2C_BYPASS_EN_BIT, 1);
 
-	My_I2C_Init();
-	MPU6050_WriteReg_Byte(MPU6050_PWR_MGMT_1, 0x80);
-	
-	MPU6050_WriteReg_Byte(MPU6050_PWR_MGMT_1, 0x01);
-	MPU6050_WriteReg_Byte(MPU6050_PWR_MGMT_2, 0x00);
-	MPU6050_WriteReg_Byte(MPU6050_SMPLRT_DIV, 0x09);
-	MPU6050_WriteReg_Byte(MPU6050_CONFIG, 0x06);
-	MPU6050_WriteReg_Byte(0X37,0X80);	//INT
+//	My_I2C_Init();
+//	MPU6050_WriteReg_Byte(MPU6050_PWR_MGMT_1, 0x80);
+//	
+//	MPU6050_WriteReg_Byte(MPU6050_PWR_MGMT_1, 0x01);
+//	MPU6050_WriteReg_Byte(MPU6050_PWR_MGMT_2, 0x00);
+//	MPU6050_WriteReg_Byte(MPU6050_SMPLRT_DIV, 0x09);
+//	MPU6050_WriteReg_Byte(MPU6050_CONFIG, 0x06);
+//	MPU6050_WriteReg_Byte(0X37,0X80);	//INT
 
-	MPU6050_WriteReg_Byte(MPU6050_GYRO_CONFIG, 0x18);	// 陀螺仪选择最大量程±2000°/s (32767/2000≈16.4)
-	MPU6050_WriteReg_Byte(MPU6050_ACCEL_CONFIG, 0x00);	// 加速度计选择±2g
+//	MPU6050_WriteReg_Byte(MPU6050_GYRO_CONFIG, 0x18);	// 陀螺仪选择最大量程±2000°/s (32767/2000≈16.4)
+//	MPU6050_WriteReg_Byte(MPU6050_ACCEL_CONFIG, 0x00);	// 加速度计选择±2g
 }
 
 uint8_t MPU6050_GetID(void)
@@ -147,7 +147,7 @@ static  unsigned short inv_orientation_matrix_to_scalar(
 }
 
 // 用在DMP初始化的、官方提供的函数
-static void run_self_test(void)
+static unsigned char run_self_test(void)
 {
     int result;
     long gyro[3], accel[3];
@@ -169,29 +169,58 @@ static void run_self_test(void)
         accel[1] *= accel_sens;
         accel[2] *= accel_sens;
         dmp_set_accel_bias(accel);
+		return 0;
 		//printf("setting bias succesfully ......\r\n");
     }
+	else return 1;
 }
 
-void MPU6050_DMP_Init(void)
+unsigned char MPU6050_DMP_Init(void)
 {
 //	
 //	// 以下参考官方的函数进行简化配置（没有直接看官方的函数，看的是WHEELTEC写的，它们应该是看官方函数写的...）
 //	mpu_init();
-	if(!mpu_init())
-	{
-		mpu_set_sensors(INV_XYZ_GYRO | INV_XYZ_ACCEL);
-		mpu_configure_fifo(INV_XYZ_GYRO | INV_XYZ_ACCEL);
-		mpu_set_sample_rate(DEFAULT_MPU_HZ);
-		dmp_load_motion_driver_firmware();
-		dmp_set_orientation(inv_orientation_matrix_to_scalar(gyro_orientation));
-		dmp_enable_feature(DMP_FEATURE_6X_LP_QUAT | DMP_FEATURE_TAP |
-			  DMP_FEATURE_ANDROID_ORIENT | DMP_FEATURE_SEND_RAW_ACCEL | DMP_FEATURE_SEND_CAL_GYRO |
-			  DMP_FEATURE_GYRO_CAL);
-		dmp_set_fifo_rate(DEFAULT_MPU_HZ);
-		run_self_test();
-		mpu_set_dmp_state(1);
+//	if(!mpu_init())
+//	{
+//		mpu_set_sensors(INV_XYZ_GYRO | INV_XYZ_ACCEL);
+//		mpu_configure_fifo(INV_XYZ_GYRO | INV_XYZ_ACCEL);
+//		mpu_set_sample_rate(DEFAULT_MPU_HZ);
+//		dmp_load_motion_driver_firmware();
+//		dmp_set_orientation(inv_orientation_matrix_to_scalar(gyro_orientation));
+//		dmp_enable_feature(DMP_FEATURE_6X_LP_QUAT | DMP_FEATURE_TAP |
+//			  DMP_FEATURE_ANDROID_ORIENT | DMP_FEATURE_SEND_RAW_ACCEL | DMP_FEATURE_SEND_CAL_GYRO |
+//			  DMP_FEATURE_GYRO_CAL);
+//		dmp_set_fifo_rate(DEFAULT_MPU_HZ);
+//		run_self_test();
+//		mpu_set_dmp_state(1);
+//	}
+	u8 res=0;
+	if(mpu_init()==0)	//³õÊ¼»¯MPU6050
+	{	 
+		res=mpu_set_sensors(INV_XYZ_GYRO|INV_XYZ_ACCEL);//ÉèÖÃËùÐèÒªµÄ´«¸ÐÆ÷
+		if(res)return 1; 
+		res=mpu_configure_fifo(INV_XYZ_GYRO|INV_XYZ_ACCEL);//ÉèÖÃFIFO
+		if(res)return 2; 
+		res=mpu_set_sample_rate(DEFAULT_MPU_HZ);	//ÉèÖÃ²ÉÑùÂÊ
+		if(res)return 3; 
+		res=dmp_load_motion_driver_firmware();		//¼ÓÔØdmp¹Ì¼þ
+		if(res)return 4; 
+		res=dmp_set_orientation(inv_orientation_matrix_to_scalar(gyro_orientation));//ÉèÖÃÍÓÂÝÒÇ·½Ïò
+		if(res)return 5; 
+		res=dmp_enable_feature(DMP_FEATURE_6X_LP_QUAT|DMP_FEATURE_TAP|	//ÉèÖÃdmp¹¦ÄÜ
+		    DMP_FEATURE_ANDROID_ORIENT|DMP_FEATURE_SEND_RAW_ACCEL|DMP_FEATURE_SEND_CAL_GYRO|
+		    DMP_FEATURE_GYRO_CAL);
+		if(res)return 6; 
+		res=dmp_set_fifo_rate(DEFAULT_MPU_HZ);	//ÉèÖÃDMPÊä³öËÙÂÊ(×î´ó²»³¬¹ý200Hz)
+		if(res)return 7;   
+		res=run_self_test();		//×Ô¼ì
+	//	if(res)return 8;    
+		res=mpu_set_dmp_state(1);	//Ê¹ÄÜDMP
+		if(res)return 9;     
 	}
+	else 
+	return 10;
+	return 0;
 }
 
 void MPU6050_DMP_GetData(float *pitch, float *roll, float *yaw, 

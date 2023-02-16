@@ -33,3 +33,4 @@
 .\objects\control.o: .\Hardware\OLED.h
 .\objects\control.o: .\Hardware\Key.h
 .\objects\control.o: .\System\PWM.h
+.\objects\control.o: .\System\Encounter.h

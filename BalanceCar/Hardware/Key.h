@@ -3,7 +3,7 @@
 
 void Key_Init(void);
 //uint8_t Key_GetKeyNum(void);
-unsigned char Key_GetKeyNum();
-void Key_Inspect();
+unsigned char Key_GetKeyNum(void);
+void Key_Inspect(void);
 
 #endif

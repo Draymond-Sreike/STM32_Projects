@@ -32,7 +32,7 @@ void Key_Init(void)
 // 由于Delay函数会和inv_mpu.c文件中mpu_reset_fifo函数中的一段代码发生干扰，导致Delay函数执行时整个工程卡死，所以这里摒弃了Delay扫描按键
 // 而改用定时器扫描按键，参考51的工程文件：9-2 秒表（定时器扫描按键）
 
-unsigned char Key_GetKeyNum()
+unsigned char Key_GetKeyNum(void)
 {			
 	unsigned char temp=0;				
 	temp=keynum;						
@@ -40,7 +40,7 @@ unsigned char Key_GetKeyNum()
 	return temp;
 }
 
-unsigned char Key_Num()			
+unsigned char Key_Num(void)			
 {
 	unsigned char num=0;
 	if(GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_1) == 0){num=1;}
@@ -50,7 +50,7 @@ unsigned char Key_Num()
 	return num;
 }
 
-void Key_Inspect()
+void Key_Inspect(void)
 {
 	last_state=now_state;
 	now_state=Key_Num();				

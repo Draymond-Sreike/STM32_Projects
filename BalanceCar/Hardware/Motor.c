@@ -87,11 +87,11 @@ void Motor_Right_SetSpeed(int16_t Speed)
 float Motor_Left_GetVelocity(void)
 { 	
 	
-	static float Speed = 0.0f;	//车轮速度
+	static float velocity = 0.0f;	//车轮速度
 	//车轮转速=编码器读数（5ms每次）*读取频率/倍频数/减速比/编码器精度
 	//车轮速度=车轮转速*车轮周长
-	Speed = EnCounter_Left_Get() * 29.9854758;
-	return Speed;
+	velocity = EnCounter_Left_Get() * 29.9854758;
+	return velocity;
 }
 
 float Motor_Right_GetVelocity(void)
